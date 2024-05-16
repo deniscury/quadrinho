@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\QuadrinhoResource;
+use App\Http\Resources\QuadrinhosCollection;
 use App\Models\Quadrinho;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,7 @@ class QuadrinhoController extends Controller
      */
     public function index()
     {
-        return Quadrinho::all();
+        return new QuadrinhosCollection(Quadrinho::all());
     }
 
     /**
@@ -44,13 +46,10 @@ class QuadrinhoController extends Controller
      */
     public function show($quadrinho)
     {
-        $quadrinho = Quadrinho::find($quadrinho);
+        $quadrinho = Quadrinho::with('editora', 'traducao')->find($quadrinho);
 
         if ($quadrinho){
-            $quadrinho->editora;
-            $quadrinho->capitulos;
-
-            return $quadrinho;
+            return new QuadrinhoResource($quadrinho);
         }
 
         return response()->json(array(
@@ -68,10 +67,25 @@ class QuadrinhoController extends Controller
     public function update(Request $request, $quadrinho)
     {
         $quadrinho = Quadrinho::find($quadrinho);
-        if ($quadrinho){
-            $quadrinho->update($request->all());
 
-            return $quadrinho;
+        if ($quadrinho){
+            $path = is_null($request->capa)?'':$request->capa->store('capa', 'public');
+
+            $quadrinho->ano = isset($request->ano)?$request->ano:$quadrinho->ano;
+            $quadrinho->nome =  isset($request->nome)?$request->nome:$quadrinho->nome;
+            $quadrinho->autor = isset($request->autor)?$request->autor:$quadrinho->autor;
+            $quadrinho->capa = $path==''?$quadrinho->capa:$path;
+            $quadrinho->editora_id = isset($request->editora_id)?$request->editora_id:$quadrinho->editora_id;
+            $quadrinho->traducao_id = isset($request->traducao_id)?$request->traducao_id:$quadrinho->traducao_id;
+
+            if($quadrinho->save()){
+                return $quadrinho;
+            }
+            else{
+                return response()->json(array(
+                    'message' => 'Erro ao atualizar quadrinho.'
+                ), 404);
+            }
         }
 
         return response()->json(array(

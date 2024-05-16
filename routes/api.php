@@ -3,7 +3,9 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CapituloController;
 use App\Http\Controllers\EditoraController;
+use App\Http\Controllers\IdiomaController;
 use App\Http\Controllers\QuadrinhoController;
+use App\Http\Controllers\TraducaoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +23,9 @@ Route::group(array('middleware' => array('auth:sanctum')), function(){
     Route::apiResources(array(
         'editora' => EditoraController::class,
         'quadrinho' => QuadrinhoController::class,
-        'capitulo' => CapituloController::class
+        'capitulo' => CapituloController::class,
+        'idioma' => IdiomaController::class,
+        'traducao' => TraducaoController::class
     ));
 
     Route::post('/logout', array(AuthController::class, 'logout'));

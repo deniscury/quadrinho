@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\EditoraResource;
-use App\Http\Resources\EditorasCollection;
-use App\Models\Editora;
+use App\Http\Resources\IdiomaResource;
+use App\Http\Resources\IdiomasCollection;
+use App\Models\Idioma;
 use Illuminate\Http\Request;
 
-class EditoraController extends Controller
+class IdiomaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class EditoraController extends Controller
      */
     public function index()
     {
-        return new EditorasCollection(Editora::all());
+        return new IdiomasCollection(Idioma::all());
     }
 
     /**
@@ -27,33 +27,33 @@ class EditoraController extends Controller
      */
     public function store(Request $request)
     {
-        if(Editora::create($request->all())){
+        if(Idioma::create($request->all())){
             return response()->json(array(
-                'message' => 'Editora cadastrada com sucesso'
+                'message' => 'Idioma cadastrado com sucesso'
             ), 201);
         }
 
         return response()->json(array(
-            'message' => 'Erro ao cadastrar o editora.'
+            'message' => 'Erro ao cadastrar o idioma.'
         ), 500);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Editora  $editora
+     * @param  \App\Models\Idioma  $idioma
      * @return \Illuminate\Http\Response
      */
-    public function show($editora)
+    public function show($idioma)
     {
-        $editora = Editora::with('quadrinhos')->find($editora);
+        $idioma = Idioma::with('traducoes')->find($idioma);
 
-        if ($editora){
-            return new EditoraResource($editora);
+        if ($idioma){
+            return new IdiomaResource($idioma);
         }
 
         return response()->json(array(
-            'message' => 'Editora não encontrada.'
+            'message' => 'Idioma não encontrado.'
         ), 404);
     }
 
@@ -61,44 +61,43 @@ class EditoraController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Editora  $editora
+     * @param  \App\Models\Idioma  $idioma
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $editora)
+    public function update(Request $request, $idioma)
     {
-        $editora = Editora::find($editora);
+        $idioma = Idioma::find($idioma);
+        if ($idioma){
+            $idioma->update($request->all());
 
-        if ($editora){
-            $editora->update($request->all());
-
-            return $editora;
+            return $idioma;
         }
 
         return response()->json(array(
-            'message' => 'Editora não encontrada.'
+            'message' => 'Idioma não encontrado.'
         ), 404);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Editora  $editora
+     * @param  \App\Models\Idioma  $idioma
      * @return \Illuminate\Http\Response
      */
-    public function destroy($editora)
+    public function destroy($idioma)
     {
-        $editora = Editora::find($editora);
+        $idioma = Idioma::find($idioma);
 
-        if ($editora){
-            Editora::destroy($editora);
+        if ($idioma){
+            Idioma::destroy($idioma);
 
             return response()->json(array(
-                'message' => 'Editora excluída com sucesso.'
+                'message' => 'Idioma excluído com sucesso.'
             ), 404);
         }
 
         return response()->json(array(
-            'message' => 'Editora não encontrada.'
+            'message' => 'Idioma não encontrado.'
         ), 404);
     }
 }

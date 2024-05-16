@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CapituloResource;
+use App\Http\Resources\CapitulosCollection;
 use App\Models\Capitulo;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,7 @@ class CapituloController extends Controller
      */
     public function index()
     {
-        return Capitulo::all();
+        return new CapitulosCollection(Capitulo::all());
     }
 
     /**
@@ -44,12 +46,10 @@ class CapituloController extends Controller
      */
     public function show($capitulo)
     {
-        $capitulo = Capitulo::find($capitulo);
+        $capitulo = Capitulo::with('quadrinho')->find($capitulo);
 
         if ($capitulo){
-            $capitulo->quadrinho;
-
-            return $capitulo;
+            return new CapituloResource($capitulo);
         }
 
         return response()->json(array(
