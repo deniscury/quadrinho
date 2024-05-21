@@ -5,6 +5,7 @@ use App\Http\Controllers\CapituloController;
 use App\Http\Controllers\EditoraController;
 use App\Http\Controllers\IdiomaController;
 use App\Http\Controllers\QuadrinhoController;
+use App\Http\Controllers\SiteController;
 use App\Http\Controllers\TraducaoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,3 +38,5 @@ Route::post('/register', array(AuthController::class, 'register'));
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/site/{traducao}/{quadrinho?}/{capitulo?}', array(SiteController::class, 'lerQuadrinho'));

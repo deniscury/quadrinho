@@ -17,8 +17,21 @@ class TraducaoResource extends JsonResource
         return array(
             'id' => $this->id,
             'nome' => $this->nome,
+            'abreviatura' => $this->abreviatura,
             'idioma' => new IdiomaResource($this->whenLoaded('idioma')),
             'quadrinhos' => new QuadrinhosCollection($this->whenLoaded('quadrinhos')),
+            'links' => array(
+                array(
+                    'rel' => 'Alterar tradução',
+                    'type' => 'PUT',
+                    'url' => route('traducao.update', $this->id)
+                ),
+                array(
+                    'rel' => 'Excluir tradução',
+                    'type' => 'DELETE',
+                    'url' => route('traducao.destroy', $this->id)
+                )
+            )
         );
     }
 }

@@ -23,6 +23,18 @@ class QuadrinhoResource extends JsonResource
             'capa' => Storage::disk('public')->url($this->capa),
             'editora' => new EditoraResource($this->whenLoaded('editora')),
             'traducao' => new TraducaoResource($this->whenLoaded('traducao')),
+            'links' => array(
+                array(
+                    'rel' => 'Alterar quadrinho',
+                    'type' => 'PUT',
+                    'url' => route('quadrinho.update', $this->id)
+                ),
+                array(
+                    'rel' => 'Excluir quadrinho',
+                    'type' => 'DELETE',
+                    'url' => route('quadrinho.destroy', $this->id)
+                )
+            )
         );
     }
 }

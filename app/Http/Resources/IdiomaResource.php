@@ -17,7 +17,19 @@ class IdiomaResource extends JsonResource
         return array(
             'id' => $this->id,
             'nome' => $this->nome,
-            'traducoes' => new TraducoesCollection($this->whenLoaded('traducoes'))
+            'traducoes' => new TraducoesCollection($this->whenLoaded('traducoes')),
+            'links' => array(
+                array(
+                    'rel' => 'Alterar idioma',
+                    'type' => 'PUT',
+                    'url' => route('idioma.update', $this->id)
+                ),
+                array(
+                    'rel' => 'Excluir idioma',
+                    'type' => 'DELETE',
+                    'url' => route('idioma.destroy', $this->id)
+                )
+            )
         );
     }
 }

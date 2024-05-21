@@ -18,6 +18,18 @@ class EditoraResource extends JsonResource
             'id' => $this->id,
             'nome' => $this->nome,
             'quadrinhos' => new QuadrinhosCollection($this->whenLoaded('quadrinho')),
+            'links' => array(
+                array(
+                    'rel' => 'Alterar editora',
+                    'type' => 'PUT',
+                    'url' => route('editora.update', $this->id)
+                ),
+                array(
+                    'rel' => 'Excluir editora',
+                    'type' => 'DELETE',
+                    'url' => route('editora.destroy', $this->id)
+                )
+            )
         );
     }
 }
