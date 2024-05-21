@@ -40,3 +40,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/site/{traducao}/{quadrinho?}/{capitulo?}', array(SiteController::class, 'lerQuadrinho'));
+Route::get('/site', array(SiteController::class, 'index'));
